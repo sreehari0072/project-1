@@ -205,6 +205,9 @@ public class WelcomeFrame extends JFrame {
         hero.add(right, BorderLayout.EAST);
         wrapper.add(hero);
         add(wrapper, BorderLayout.CENTER);
+
+        //actions
+        exitbutton.addActionListener(e ->System.exit(0));
     }
 
     private JPanel createHeroStat(String num, String label) {
