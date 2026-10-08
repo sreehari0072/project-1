@@ -41,7 +41,6 @@ public class WelcomeFrame extends JFrame {
 
         add(panel);
 
-        exitButton.addActionListener(e -> System.exit(0));
     }
 
     public static void main(String[] args) {
