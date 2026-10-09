@@ -171,7 +171,7 @@ public class AdminFrame extends JFrame {
 
         return btn;
     }
-
+    // ----main class ----
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new AdminFrame().setVisible(true));
     }
