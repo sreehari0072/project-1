@@ -18,7 +18,7 @@ public class AdminFrame extends JFrame {
         setLayout(new BorderLayout());
         getContentPane().setBackground(BG_COLOR);
 
-        // ===== HEADER =====
+        // === HEADER ===
         JPanel header = new JPanel(new BorderLayout());
         header.setBackground(PRIMARY);
         header.setPreferredSize(new Dimension(0, 80));
