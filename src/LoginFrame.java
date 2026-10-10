@@ -97,7 +97,6 @@ public class LoginFrame extends JFrame {
         subtitle.setAlignmentX(Component.LEFT_ALIGNMENT);
         subtitle.setBorder(new EmptyBorder(6,0,25,0));
     
-        
         right.add(title);
         right.add(subtitle);
 
