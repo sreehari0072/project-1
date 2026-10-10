@@ -18,7 +18,7 @@ public class AdminFrame extends JFrame {
         setLayout(new BorderLayout());
         getContentPane().setBackground(BG_COLOR);
 
-        // ===== HEADER =====
+        // === HEADER ===
         JPanel header = new JPanel(new BorderLayout());
         header.setBackground(PRIMARY);
         header.setPreferredSize(new Dimension(0, 80));
@@ -40,7 +40,7 @@ public class AdminFrame extends JFrame {
 
         add(header, BorderLayout.NORTH);
 
-        // ===== CENTER =====
+        // === CENTER ===
         JPanel wrapper = new JPanel(new GridBagLayout());
         wrapper.setBackground(BG_COLOR);
         wrapper.setBorder(new EmptyBorder(40, 0, 40, 0));
@@ -69,7 +69,7 @@ public class AdminFrame extends JFrame {
         card.add(title);
         card.add(welcome);
 
-        // ===== DASHBOARD BUTTONS - like website cards =====
+        // ==== DASHBOARD BUTTONS like website cards ====
         JPanel grid = new JPanel(new GridLayout(3, 1, 15, 15));
         grid.setBackground(Color.WHITE);
         grid.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -115,7 +115,7 @@ public class AdminFrame extends JFrame {
         ));
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        // Hover effect like website
+        // ---Hover effect like website---
         btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent e) {
                 btn.setBackground(new Color(248, 250, 252));
@@ -171,7 +171,7 @@ public class AdminFrame extends JFrame {
 
         return btn;
     }
-
+    // ----main class ----
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new AdminFrame().setVisible(true));
     }
