@@ -99,6 +99,7 @@ public class LoginFrame extends JFrame {
     
         right.add(title);
         right.add(subtitle);
+        
 
          // Fields
         right.add(createField("College ID:", new JTextField(), "Ex: CS21-045"));
