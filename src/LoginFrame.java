@@ -100,11 +100,7 @@ public class LoginFrame extends JFrame {
         right.add(title);
         right.add(subtitle);
 
-        // Fields
-        right.add(createField("College ID:", new JTextField(), "Ex: CS21-045"));
-        right.add(Box.createVerticalStrut(16));
-        right.add(createField("Password:", new JPasswordField(), "••••••••"));
-        right.add(Box.createVerticalStrut(8));
+        //.
 
         JPanel rememberPanel = new JPanel(new BorderLayout());
         rememberPanel.setBackground(Color.WHITE);
