@@ -156,7 +156,10 @@ public class LoginFrame extends JFrame {
         or2.setForeground(TEXT_GRAY);
         divWrap.add(or2);
 
-       //.
+       JPanel bottomActions = new JPanel(new GridLayout(1,2,12,0));
+        bottomActions.setBackground(Color.WHITE);
+        bottomActions.setMaximumSize(new Dimension(1000, 44));
+        bottomActions.setAlignmentX(Component.LEFT_ALIGNMENT);
         
 
         JButton registerButton = new JButton("REGISTER");
