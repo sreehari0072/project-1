@@ -3,176 +3,247 @@ import javax.swing.border.*;
 import java.awt.*;
 
 public class AdminFrame extends JFrame {
+public AdminFrame() {
+    setTitle("Admin Dashboard");
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-    public AdminFrame() {
-        setTitle("Admin Dashboard");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
+    Color BG_COLOR = new Color(245, 247, 251);
+    Color PRIMARY = new Color(37, 99, 235);
+    Color BORDER = new Color(229, 231, 235);
+    Color TEXT_DARK = new Color(17, 24, 39);
+    Color TEXT_GRAY = new Color(107, 114, 128);
 
-        Color BG_COLOR = new Color(245, 247, 251);
-        Color PRIMARY = new Color(37, 99, 235);
-        Color BORDER = new Color(229, 231, 235);
-        Color TEXT_DARK = new Color(17, 24, 39);
-        Color TEXT_GRAY = new Color(107, 114, 128);
+    setLayout(new BorderLayout());
+    getContentPane().setBackground(BG_COLOR);
 
-        setLayout(new BorderLayout());
-        getContentPane().setBackground(BG_COLOR);
+    // HEADER
+    JPanel header = new JPanel(new BorderLayout());
+    header.setBackground(PRIMARY);
+    header.setPreferredSize(new Dimension(0, 80));
+    header.setBorder(BorderFactory.createEmptyBorder(0, 40, 0, 40));
 
-        // === HEADER ===
-        JPanel header = new JPanel(new BorderLayout());
-        header.setBackground(PRIMARY);
-        header.setPreferredSize(new Dimension(0, 80));
-        header.setBorder(BorderFactory.createEmptyBorder(0, 40, 0, 40));
+    JLabel headerTitle = new JLabel("Lost & Found  •  Admin Dashboard");
+    headerTitle.setFont(new Font("Segoe UI", Font.BOLD, 22));
+    headerTitle.setForeground(Color.WHITE);
+    header.add(headerTitle, BorderLayout.WEST);
 
-        JLabel headerTitle = new JLabel("Lost & Found  •  Admin Dashboard");
-        headerTitle.setFont(new Font("Segoe UI", Font.BOLD, 22));
-        headerTitle.setForeground(Color.WHITE);
-        header.add(headerTitle, BorderLayout.WEST);
+    JButton logoutTop = new JButton("Logout");
+    logoutTop.setFont(new Font("Segoe UI", Font.BOLD, 13));
+    logoutTop.setForeground(Color.WHITE);
+    logoutTop.setBackground(new Color(29, 78, 216));
+    logoutTop.setBorder(new EmptyBorder(8, 18, 8, 18));
+    logoutTop.setFocusPainted(false);
+    logoutTop.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    header.add(logoutTop, BorderLayout.EAST);
 
-        JButton logoutTop = new JButton("Logout");
-        logoutTop.setFont(new Font("Segoe UI", Font.BOLD, 13));
-        logoutTop.setForeground(Color.WHITE);
-        logoutTop.setBackground(new Color(29, 78, 216));
-        logoutTop.setBorder(new EmptyBorder(8, 18, 8, 18));
-        logoutTop.setFocusPainted(false);
-        logoutTop.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        header.add(logoutTop, BorderLayout.EAST);
+    logoutTop.addActionListener(e -> logout());
 
-        add(header, BorderLayout.NORTH);
+    add(header, BorderLayout.NORTH);
 
-        // === CENTER ===
-        JPanel wrapper = new JPanel(new GridBagLayout());
-        wrapper.setBackground(BG_COLOR);
-        wrapper.setBorder(new EmptyBorder(40, 0, 40, 0));
+    // CENTER
+    JPanel wrapper = new JPanel(new GridBagLayout());
+    wrapper.setBackground(BG_COLOR);
+    wrapper.setBorder(new EmptyBorder(40, 0, 40, 0));
 
-        JPanel card = new JPanel();
-        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
-        card.setBackground(Color.WHITE);
-        card.setBorder(BorderFactory.createCompoundBorder(
-            new LineBorder(BORDER, 1, true),
-            new EmptyBorder(40, 40, 40, 40)
-        ));
-        card.setPreferredSize(new Dimension(850, 620));
-        card.setMaximumSize(new Dimension(850, 620));
+    JPanel card = new JPanel();
+    card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
+    card.setBackground(Color.WHITE);
+    card.setBorder(BorderFactory.createCompoundBorder(
+        new LineBorder(BORDER, 1, true),
+        new EmptyBorder(40, 40, 40, 40)
+    ));
+    card.setPreferredSize(new Dimension(850, 620));
+    card.setMaximumSize(new Dimension(850, 620));
 
-        JLabel title = new JLabel("ADMIN DASHBOARD");
-        title.setFont(new Font("Segoe UI", Font.BOLD, 26));
-        title.setForeground(TEXT_DARK);
-        title.setAlignmentX(Component.LEFT_ALIGNMENT);
+    JLabel title = new JLabel("ADMIN DASHBOARD");
+    title.setFont(new Font("Segoe UI", Font.BOLD, 26));
+    title.setForeground(TEXT_DARK);
+    title.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        JLabel welcome = new JLabel("Welcome, Administrator  •  Manage the Lost & Found portal");
-        welcome.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        welcome.setForeground(TEXT_GRAY);
-        welcome.setAlignmentX(Component.LEFT_ALIGNMENT);
-        welcome.setBorder(new EmptyBorder(5, 0, 30, 0));
+    JLabel welcome = new JLabel("Welcome, Administrator  •  Manage the Lost & Found portal");
+    welcome.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+    welcome.setForeground(TEXT_GRAY);
+    welcome.setAlignmentX(Component.LEFT_ALIGNMENT);
+    welcome.setBorder(new EmptyBorder(5, 0, 30, 0));
 
-        card.add(title);
-        card.add(welcome);
+    card.add(title);
+    card.add(welcome);
 
-        // ==== DASHBOARD BUTTONS like website cards ====
-        JPanel grid = new JPanel(new GridLayout(3, 1, 15, 15));
-        grid.setBackground(Color.WHITE);
-        grid.setAlignmentX(Component.LEFT_ALIGNMENT);
-        grid.setMaximumSize(new Dimension(770, 400));
+    // DASHBOARD BUTTONS
+    JPanel grid = new JPanel(new GridLayout(3, 1, 15, 15));
+    grid.setBackground(Color.WHITE);
+    grid.setAlignmentX(Component.LEFT_ALIGNMENT);
+    grid.setMaximumSize(new Dimension(770, 400));
 
-        grid.add(createDashboardButton("MANAGE ITEMS", "Add, edit or remove lost & found items", new Color(37,99,235), "📦"));
-        grid.add(createDashboardButton("REVIEW CLAIMS", "Approve or reject claims from students", new Color(16,185,129), "✓"));
-        grid.add(createDashboardButton("VIEW REPORTS", "See statistics and activity logs", new Color(139,92,246), "📊"));
+    JPanel manageItems = createDashboardButton(
+        "MANAGE ITEMS",
+        "Add, edit or remove lost & found items",
+        new Color(37, 99, 235), "📦"
+    );
 
-        card.add(grid);
+    JPanel reviewClaims = createDashboardButton(
+        "REVIEW CLAIMS",
+        "Approve or reject claims from students",
+        new Color(16, 185, 129), "✓"
+    );
 
-        // Bottom logout (second option)
-        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        bottomPanel.setBackground(Color.WHITE);
-        bottomPanel.setBorder(new EmptyBorder(30, 0, 0, 0));
-        bottomPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+    JPanel viewReports = createDashboardButton(
+        "VIEW REPORTS",
+        "See statistics and activity logs",
+        new Color(139, 92, 246), "📊"
+    );
 
-        JLabel logoutHint = new JLabel("Not you? ");
-        logoutHint.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        logoutHint.setForeground(TEXT_GRAY);
+    manageItems.addMouseListener(new java.awt.event.MouseAdapter() {
+        @Override
+        public void mouseClicked(java.awt.event.MouseEvent e) {
+            openFrame(new ManageItemsFrame());
+        }
+    });
 
-        JButton logoutLink = new JButton("Logout");
-        logoutLink.setFont(new Font("Segoe UI", Font.BOLD, 13));
-        logoutLink.setForeground(PRIMARY);
-        logoutLink.setBorder(null);
-        logoutLink.setContentAreaFilled(false);
-        logoutLink.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    reviewClaims.addMouseListener(new java.awt.event.MouseAdapter() {
+        @Override
+        public void mouseClicked(java.awt.event.MouseEvent e) {
+            openFrame(new ClaimReviewFrame());
+        }
+    });
 
-        bottomPanel.add(logoutHint);
-        bottomPanel.add(logoutLink);
-        card.add(bottomPanel);
+    viewReports.addMouseListener(new java.awt.event.MouseAdapter() {
+        @Override
+        public void mouseClicked(java.awt.event.MouseEvent e) {
+            openFrame(new ReportsFrame());
+        }
+    });
 
-        wrapper.add(card);
-        add(wrapper, BorderLayout.CENTER);
+    grid.add(manageItems);
+    grid.add(reviewClaims);
+    grid.add(viewReports);
+
+    card.add(grid);
+
+    // BOTTOM LOGOUT
+    JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+    bottomPanel.setBackground(Color.WHITE);
+    bottomPanel.setBorder(new EmptyBorder(30, 0, 0, 0));
+    bottomPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+    JLabel logoutHint = new JLabel("Not you? ");
+    logoutHint.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+    logoutHint.setForeground(TEXT_GRAY);
+
+    JButton logoutLink = new JButton("Logout");
+    logoutLink.setFont(new Font("Segoe UI", Font.BOLD, 13));
+    logoutLink.setForeground(PRIMARY);
+    logoutLink.setBorder(null);
+    logoutLink.setContentAreaFilled(false);
+    logoutLink.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+    logoutLink.addActionListener(e -> logout());
+
+    bottomPanel.add(logoutHint);
+    bottomPanel.add(logoutLink);
+    card.add(bottomPanel);
+
+    wrapper.add(card);
+    add(wrapper, BorderLayout.CENTER);
+}
+
+private void openFrame(JFrame nextFrame) {
+    nextFrame.setVisible(true);
+    dispose();
+}
+
+private void logout() {
+    int choice = JOptionPane.showConfirmDialog(
+        this,
+        "Are you sure you want to logout?",
+        "Logout",
+        JOptionPane.YES_NO_OPTION
+    );
+
+    if (choice == JOptionPane.YES_OPTION) {
+        JOptionPane.showMessageDialog(this, "You have logged out.");
+
+        // Open WelcomeFrame if that file is available.
+        // Otherwise, close this window.
+        try {
+            WelcomeFrame welcome = new WelcomeFrame();
+            welcome.setVisible(true);
+            dispose();
+        } catch (Exception ex) {
+            dispose();
+        }
     }
+}
 
-    private JPanel createDashboardButton(String title, String desc, Color accent, String iconText) {
-        JPanel btn = new JPanel(new BorderLayout());
-        btn.setBackground(Color.WHITE);
-        btn.setBorder(BorderFactory.createCompoundBorder(
-            new LineBorder(new Color(229,231,235), 1, true),
-            new EmptyBorder(18, 20, 18, 20)
-        ));
-        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+private JPanel createDashboardButton(
+        String title, String desc, Color accent, String iconText) {
 
-        // ---Hover effect like website---
-        btn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent e) {
-                btn.setBackground(new Color(248, 250, 252));
-                btn.setBorder(BorderFactory.createCompoundBorder(
-                    new LineBorder(accent, 1, true),
-                    new EmptyBorder(18, 20, 18, 20)
-                ));
-            }
-            public void mouseExited(java.awt.event.MouseEvent e) {
-                btn.setBackground(Color.WHITE);
-                btn.setBorder(BorderFactory.createCompoundBorder(
-                    new LineBorder(new Color(229,231,235), 1, true),
-                    new EmptyBorder(18, 20, 18, 20)
-                ));
-            }
-        });
+    JPanel btn = new JPanel(new BorderLayout());
+    btn.setBackground(Color.WHITE);
+    btn.setBorder(BorderFactory.createCompoundBorder(
+        new LineBorder(new Color(229, 231, 235), 1, true),
+        new EmptyBorder(18, 20, 18, 20)
+    ));
+    btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        // Left - Icon circle
-        JPanel iconPanel = new JPanel(new GridBagLayout());
-        iconPanel.setBackground(Color.WHITE);
-        iconPanel.setPreferredSize(new Dimension(50, 50));
-        JLabel icon = new JLabel(iconText);
-        icon.setFont(new Font("Segoe UI", Font.BOLD, 20));
-        icon.setForeground(accent);
-        iconPanel.add(icon);
+    btn.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseEntered(java.awt.event.MouseEvent e) {
+            btn.setBackground(new Color(248, 250, 252));
+            btn.setBorder(BorderFactory.createCompoundBorder(
+                new LineBorder(accent, 1, true),
+                new EmptyBorder(18, 20, 18, 20)
+            ));
+        }
 
-        // Center - Text
-        JPanel textPanel = new JPanel();
-        textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
-        textPanel.setBackground(Color.WHITE);
-        textPanel.setBorder(new EmptyBorder(0, 15, 0, 0));
+        public void mouseExited(java.awt.event.MouseEvent e) {
+            btn.setBackground(Color.WHITE);
+            btn.setBorder(BorderFactory.createCompoundBorder(
+                new LineBorder(new Color(229, 231, 235), 1, true),
+                new EmptyBorder(18, 20, 18, 20)
+            ));
+        }
+    });
 
-        JLabel t = new JLabel(title);
-        t.setFont(new Font("Segoe UI", Font.BOLD, 15));
-        t.setForeground(new Color(17,24,39));
+    JPanel iconPanel = new JPanel(new GridBagLayout());
+    iconPanel.setBackground(Color.WHITE);
+    iconPanel.setPreferredSize(new Dimension(50, 50));
 
-        JLabel d = new JLabel(desc);
-        d.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        d.setForeground(new Color(107,114,128));
+    JLabel icon = new JLabel(iconText);
+    icon.setFont(new Font("Segoe UI", Font.BOLD, 20));
+    icon.setForeground(accent);
+    iconPanel.add(icon);
 
-        textPanel.add(t);
-        textPanel.add(Box.createVerticalStrut(3));
-        textPanel.add(d);
+    JPanel textPanel = new JPanel();
+    textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
+    textPanel.setBackground(Color.WHITE);
+    textPanel.setBorder(new EmptyBorder(0, 15, 0, 0));
 
-        // Right - Arrow
-        JLabel arrow = new JLabel("→");
-        arrow.setFont(new Font("Segoe UI", Font.BOLD, 18));
-        arrow.setForeground(new Color(156,163,175));
+    JLabel t = new JLabel(title);
+    t.setFont(new Font("Segoe UI", Font.BOLD, 15));
+    t.setForeground(new Color(17, 24, 39));
 
-        btn.add(iconPanel, BorderLayout.WEST);
-        btn.add(textPanel, BorderLayout.CENTER);
-        btn.add(arrow, BorderLayout.EAST);
+    JLabel d = new JLabel(desc);
+    d.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+    d.setForeground(new Color(107, 114, 128));
 
-        return btn;
-    }
-    // ----main class ----
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new AdminFrame().setVisible(true));
-    }
+    textPanel.add(t);
+    textPanel.add(Box.createVerticalStrut(3));
+    textPanel.add(d);
+
+    JLabel arrow = new JLabel("→");
+    arrow.setFont(new Font("Segoe UI", Font.BOLD, 18));
+    arrow.setForeground(new Color(156, 163, 175));
+
+    btn.add(iconPanel, BorderLayout.WEST);
+    btn.add(textPanel, BorderLayout.CENTER);
+    btn.add(arrow, BorderLayout.EAST);
+
+    return btn;
+}
+
+public static void main(String[] args) {
+    SwingUtilities.invokeLater(() -> new AdminFrame().setVisible(true));
+}
+
 }
