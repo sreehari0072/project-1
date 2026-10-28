@@ -164,7 +164,6 @@ private void logout() {
     if (choice == JOptionPane.YES_OPTION) {
         JOptionPane.showMessageDialog(this, "You have logged out.");
 
-        // Open WelcomeFrame if that file is available.
         // Otherwise, close this window.
         try {
             WelcomeFrame welcome = new WelcomeFrame();
