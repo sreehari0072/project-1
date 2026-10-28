@@ -176,7 +176,7 @@ public ClaimReviewFrame() {
 
             JOptionPane.showMessageDialog(
                 this,
-                "Claim approved for this demonstration.\nNo data has been saved."
+                "Claim approved for this demonstration."
             );
         }
     });
@@ -196,7 +196,7 @@ public ClaimReviewFrame() {
 
             JOptionPane.showMessageDialog(
                 this,
-                "Claim rejected for this demonstration.\nNo data has been saved."
+                "Claim rejected for this demonstration."
             );
         }
     });
