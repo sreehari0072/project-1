@@ -4,307 +4,325 @@ import java.awt.*;
 
 public class ItemDetailsFrame extends JFrame {
 
-    private SearchFrame.Item item;
-
-    private final Color BLUE = new Color(37, 99, 235);
-    private final Color DARK_BLUE = new Color(30, 64, 175);
-    private final Color BG = new Color(245, 248, 252);
-    private final Color TEXT = new Color(31, 41, 55);
-    private final Color MUTED = new Color(107, 114, 128);
-    private final Color GREEN = new Color(22, 163, 74);
-
     public ItemDetailsFrame() {
-
-        item = SearchFrame.selectedItem;
-
-        if (item == null) {
-            item = SearchFrame.items.get(0);
-            SearchFrame.selectedItem = item;
-        }
-
-        setTitle("Item Details - Lost and Found");
+        setTitle("Item Details");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1100, 750);
-        setMinimumSize(new Dimension(900, 650));
-        setLocationRelativeTo(null);
-        getContentPane().setBackground(BG);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+        Color BG_COLOR = new Color(245, 247, 251);
+        Color PRIMARY = new Color(37, 99, 235);
+        Color BORDER = new Color(229, 231, 235);
+        Color TEXT_DARK = new Color(17, 24, 39);
+        Color TEXT_GRAY = new Color(107, 114, 128);
+
         setLayout(new BorderLayout());
+        getContentPane().setBackground(BG_COLOR);
 
-        // ================= HEADER =================
-
+        // ===== HEADER =====
         JPanel header = new JPanel(new BorderLayout());
-        header.setBackground(Color.WHITE);
-        header.setBorder(new EmptyBorder(18, 30, 18, 30));
+        header.setBackground(PRIMARY);
+        header.setPreferredSize(new Dimension(0, 80));
+        header.setBorder(BorderFactory.createEmptyBorder(0, 40, 0, 40));
 
-        JLabel backTop = new JLabel("← Back to Search");
-        backTop.setFont(new Font("Arial", Font.BOLD, 14));
-        backTop.setForeground(BLUE);
-        backTop.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        JLabel headerTitle = new JLabel("Lost & Found  •  Item Details");
+        headerTitle.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        headerTitle.setForeground(Color.WHITE);
+        header.add(headerTitle, BorderLayout.WEST);
 
-        backTop.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent e) {
-                goToSearch();
-            }
-        });
+        JButton backTop = new JButton("← Back to Search");
+        backTop.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        backTop.setForeground(Color.WHITE);
+        backTop.setBackground(new Color(29, 78, 216));
+        backTop.setBorder(new EmptyBorder(8, 18, 8, 18));
+        backTop.setFocusPainted(false);
 
-        JLabel heading = new JLabel("ITEM DETAILS");
-        heading.setFont(new Font("Arial", Font.BOLD, 20));
-        heading.setForeground(TEXT);
+        // Back to Search functionality
+        backTop.addActionListener(e -> goToSearch());
 
-        header.add(backTop, BorderLayout.WEST);
-        header.add(heading, BorderLayout.CENTER);
-
+        header.add(backTop, BorderLayout.EAST);
         add(header, BorderLayout.NORTH);
 
-        // ================= MAIN CONTENT =================
+        // ===== CENTER =====
+        JPanel wrapper = new JPanel(new GridBagLayout());
+        wrapper.setBackground(BG_COLOR);
+        wrapper.setBorder(new EmptyBorder(30, 0, 30, 0));
 
-        JPanel mainPanel = new JPanel(new GridBagLayout());
-        mainPanel.setBackground(BG);
-        mainPanel.setBorder(new EmptyBorder(25, 35, 25, 35));
+        JPanel main = new JPanel(new BorderLayout(25, 0));
+        main.setBackground(BG_COLOR);
+        main.setPreferredSize(new Dimension(960, 600));
 
-        JPanel card = new JPanel(new BorderLayout(25, 20));
-        card.setBackground(Color.WHITE);
-        card.setBorder(new CompoundBorder(
-                new LineBorder(new Color(229, 231, 235), 1, true),
-                new EmptyBorder(25, 25, 25, 25)
+        // ===== LEFT - IMAGE & ACTIONS =====
+        JPanel left = new JPanel();
+        left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
+        left.setBackground(Color.WHITE);
+        left.setBorder(new LineBorder(BORDER, 1, true));
+        left.setPreferredSize(new Dimension(380, 600));
+
+        JPanel imagePanel = new JPanel(new GridBagLayout());
+        imagePanel.setBackground(new Color(249, 250, 251));
+        imagePanel.setPreferredSize(new Dimension(380, 300));
+        imagePanel.setBorder(new MatteBorder(0, 0, 1, 0, BORDER));
+
+        JLabel bigIcon = new JLabel("👛");
+        bigIcon.setFont(new Font("Segoe UI", Font.PLAIN, 96));
+        imagePanel.add(bigIcon);
+        left.add(imagePanel);
+
+        JPanel leftContent = new JPanel();
+        leftContent.setLayout(new BoxLayout(leftContent, BoxLayout.Y_AXIS));
+        leftContent.setBackground(Color.WHITE);
+        leftContent.setBorder(new EmptyBorder(20, 22, 20, 22));
+
+        JLabel idLabel = new JLabel("ITEM ID: #F-1024");
+        idLabel.setFont(new Font("Segoe UI", Font.BOLD, 11));
+        idLabel.setForeground(TEXT_GRAY);
+        idLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JLabel itemTitle = new JLabel("Black Wallet");
+        itemTitle.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        itemTitle.setForeground(TEXT_DARK);
+        itemTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
+        itemTitle.setBorder(new EmptyBorder(6, 0, 0, 0));
+
+        // Status pills
+        JPanel pills = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
+        pills.setBackground(Color.WHITE);
+        pills.setAlignmentX(Component.LEFT_ALIGNMENT);
+        pills.setBorder(new EmptyBorder(12, 0, 0, 0));
+
+        JLabel foundPill = new JLabel("● FOUND");
+        foundPill.setFont(new Font("Segoe UI", Font.BOLD, 11));
+        foundPill.setForeground(new Color(22, 101, 52));
+        foundPill.setBackground(new Color(220, 252, 231));
+        foundPill.setOpaque(true);
+        foundPill.setBorder(BorderFactory.createCompoundBorder(
+            new LineBorder(new Color(134, 239, 172), 1, true),
+            new EmptyBorder(5, 10, 5, 10)
         ));
 
-        card.setPreferredSize(new Dimension(950, 510));
-
-        // -------- LEFT SIDE: ITEM INFORMATION --------
-
-        JPanel leftPanel = new JPanel();
-        leftPanel.setBackground(Color.WHITE);
-        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-
-        JLabel itemHeading = new JLabel(item.name);
-        itemHeading.setFont(new Font("Arial", Font.BOLD, 25));
-        itemHeading.setForeground(TEXT);
-        itemHeading.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-        JLabel statusLabel = new JLabel(
-                "● " + safe(item.status).toUpperCase()
-        );
-        statusLabel.setFont(new Font("Arial", Font.BOLD, 12));
-        statusLabel.setForeground(
-                safe(item.status).equalsIgnoreCase("Found")
-                        ? GREEN : BLUE
-        );
-        statusLabel.setBorder(new EmptyBorder(8, 0, 15, 0));
-        statusLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-        JLabel descriptionHeading = new JLabel("DESCRIPTION");
-        descriptionHeading.setFont(new Font("Arial", Font.BOLD, 13));
-        descriptionHeading.setForeground(MUTED);
-        descriptionHeading.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-        JTextArea descriptionArea = new JTextArea(
-                safe(item.description)
-        );
-        descriptionArea.setFont(new Font("Arial", Font.PLAIN, 14));
-        descriptionArea.setForeground(TEXT);
-        descriptionArea.setBackground(Color.WHITE);
-        descriptionArea.setLineWrap(true);
-        descriptionArea.setWrapStyleWord(true);
-        descriptionArea.setEditable(false);
-        descriptionArea.setFocusable(false);
-        descriptionArea.setRows(4);
-
-        JScrollPane descriptionScroll = new JScrollPane(descriptionArea);
-        descriptionScroll.setBorder(null);
-        descriptionScroll.setAlignmentX(Component.LEFT_ALIGNMENT);
-        descriptionScroll.setPreferredSize(new Dimension(400, 95));
-        descriptionScroll.setMaximumSize(new Dimension(450, 110));
-
-        leftPanel.add(itemHeading);
-        leftPanel.add(statusLabel);
-        leftPanel.add(Box.createVerticalStrut(10));
-        leftPanel.add(descriptionHeading);
-        leftPanel.add(Box.createVerticalStrut(10));
-        leftPanel.add(descriptionScroll);
-        leftPanel.add(Box.createVerticalStrut(20));
-
-        leftPanel.add(createDetailRow("CATEGORY", safe(item.category)));
-        leftPanel.add(createDetailRow("LOCATION", safe(item.location)));
-        leftPanel.add(createDetailRow(
-                safe(item.status).equalsIgnoreCase("Lost")
-                        ? "DATE REPORTED" : "DATE FOUND",
-                safe(item.date)
+        JLabel verified = new JLabel("Verified by Admin");
+        verified.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+        verified.setForeground(new Color(30, 64, 175));
+        verified.setBackground(new Color(219, 234, 254));
+        verified.setOpaque(true);
+        verified.setBorder(BorderFactory.createCompoundBorder(
+            new LineBorder(new Color(147, 197, 253), 1, true),
+            new EmptyBorder(5, 10, 5, 10)
         ));
 
-        leftPanel.add(Box.createVerticalStrut(10));
+        pills.add(foundPill);
+        pills.add(verified);
 
-        JLabel note = new JLabel(
-                "<html><div style='width:350px;'>"
-                + "Please provide accurate identifying details "
-                + "when submitting a claim."
-                + "</div></html>"
-        );
-        note.setFont(new Font("Arial", Font.PLAIN, 13));
-        note.setForeground(MUTED);
-        note.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-        leftPanel.add(note);
-
-        // -------- RIGHT SIDE: ACTION PANEL --------
-
-        JPanel rightPanel = new JPanel();
-        rightPanel.setBackground(new Color(248, 250, 252));
-        rightPanel.setBorder(new CompoundBorder(
-                new LineBorder(new Color(229, 231, 235), 1, true),
-                new EmptyBorder(22, 22, 22, 22)
+        JPanel trustBox = new JPanel(new BorderLayout());
+        trustBox.setBackground(new Color(249, 250, 251));
+        trustBox.setBorder(BorderFactory.createCompoundBorder(
+            new LineBorder(BORDER, 1, true),
+            new EmptyBorder(12, 12, 12, 12)
         ));
+        trustBox.setMaximumSize(new Dimension(400, 70));
 
-        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
-        rightPanel.setPreferredSize(new Dimension(300, 400));
-
-        JLabel actionHeading = new JLabel("NEXT STEP");
-        actionHeading.setFont(new Font("Arial", Font.BOLD, 17));
-        actionHeading.setForeground(TEXT);
-        actionHeading.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-        JLabel actionDescription = new JLabel(
-                "<html><div style='width:230px;'>"
-                + "If this item belongs to you, submit a claim "
-                + "with details that help verify your ownership."
-                + "</div></html>"
+        JLabel trust = new JLabel(
+            "<html><b style='color:#111827'>🔒 Safe Return Process</b><br>" +
+            "<span style='color:#6b7280;font-size:11px'>" +
+            "Item is secured at Admin Office. Claim requires ID proof verification." +
+            "</span></html>"
         );
-        actionDescription.setFont(new Font("Arial", Font.PLAIN, 13));
-        actionDescription.setForeground(MUTED);
-        actionDescription.setAlignmentX(Component.LEFT_ALIGNMENT);
+        trust.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        trustBox.add(trust, BorderLayout.CENTER);
 
-        JButton claimButton = new JButton("CLAIM THIS ITEM →");
-        claimButton.setFont(new Font("Arial", Font.BOLD, 13));
+        leftContent.add(idLabel);
+        leftContent.add(itemTitle);
+        leftContent.add(pills);
+        leftContent.add(Box.createVerticalStrut(18));
+        leftContent.add(trustBox);
+        leftContent.add(Box.createVerticalGlue());
+
+        // Claim button
+        JButton claimButton = new JButton("CLAIM THIS ITEM  →");
+        claimButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        claimButton.setBackground(PRIMARY);
         claimButton.setForeground(Color.WHITE);
-        claimButton.setBackground(BLUE);
+        claimButton.setBorder(new EmptyBorder(13, 0, 13, 0));
         claimButton.setFocusPainted(false);
-        claimButton.setBorderPainted(false);
         claimButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        claimButton.setMaximumSize(new Dimension(400, 46));
         claimButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-        claimButton.setMaximumSize(new Dimension(260, 45));
-        claimButton.setPreferredSize(new Dimension(260, 45));
 
-        claimButton.addActionListener(e -> openClaimFrame());
+        // Open ClaimFrame
+        claimButton.addActionListener(e -> {
+            new ClaimFrame().setVisible(true);
+            dispose();
+        });
 
+        // Back button
         JButton backButton = new JButton("BACK TO SEARCH");
-        backButton.setFont(new Font("Arial", Font.BOLD, 13));
-        backButton.setForeground(BLUE);
+        backButton.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         backButton.setBackground(Color.WHITE);
+        backButton.setBorder(BorderFactory.createCompoundBorder(
+            new LineBorder(BORDER, 1, true),
+            new EmptyBorder(11, 0, 11, 0)
+        ));
         backButton.setFocusPainted(false);
-        backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        backButton.setBorder(new LineBorder(BLUE, 1, true));
+        backButton.setMaximumSize(new Dimension(400, 42));
         backButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-        backButton.setMaximumSize(new Dimension(260, 45));
-        backButton.setPreferredSize(new Dimension(260, 45));
 
         backButton.addActionListener(e -> goToSearch());
 
-        rightPanel.add(actionHeading);
-        rightPanel.add(Box.createVerticalStrut(15));
-        rightPanel.add(actionDescription);
-        rightPanel.add(Box.createVerticalStrut(25));
-        rightPanel.add(claimButton);
-        rightPanel.add(Box.createVerticalStrut(12));
-        rightPanel.add(backButton);
-        rightPanel.add(Box.createVerticalStrut(25));
+        leftContent.add(claimButton);
+        leftContent.add(Box.createVerticalStrut(10));
+        leftContent.add(backButton);
 
-        JLabel infoLabel = new JLabel(
-                "<html><div style='width:230px;'>"
-                + "Keep your claim information accurate. "
-                + "The administrator may contact you for verification."
-                + "</div></html>"
+        left.add(leftContent);
+        main.add(left, BorderLayout.WEST);
+
+        // ===== RIGHT - DETAILS =====
+        JPanel right = new JPanel();
+        right.setLayout(new BoxLayout(right, BoxLayout.Y_AXIS));
+        right.setBackground(Color.WHITE);
+        right.setBorder(new LineBorder(BORDER, 1, true));
+
+        JPanel rightHeader = new JPanel(new BorderLayout());
+        rightHeader.setBackground(Color.WHITE);
+        rightHeader.setBorder(BorderFactory.createCompoundBorder(
+            new MatteBorder(0, 0, 1, 0, BORDER),
+            new EmptyBorder(20, 25, 20, 25)
+        ));
+
+        JLabel detTitle = new JLabel("ITEM DETAILS");
+        detTitle.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        detTitle.setForeground(TEXT_DARK);
+
+        JLabel lastUpdate = new JLabel(
+            "Last updated: 25/09/2026 • 2 claims pending"
         );
-        infoLabel.setFont(new Font("Arial", Font.PLAIN, 12));
-        infoLabel.setForeground(MUTED);
-        infoLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        lastUpdate.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        lastUpdate.setForeground(TEXT_GRAY);
 
-        rightPanel.add(infoLabel);
+        JPanel rt = new JPanel();
+        rt.setLayout(new BoxLayout(rt, BoxLayout.Y_AXIS));
+        rt.setBackground(Color.WHITE);
+        rt.add(detTitle);
+        rt.add(Box.createVerticalStrut(3));
+        rt.add(lastUpdate);
 
-        // -------- ADD PANELS TO CARD --------
+        rightHeader.add(rt, BorderLayout.WEST);
+        right.add(rightHeader);
 
-        card.add(leftPanel, BorderLayout.CENTER);
-        card.add(rightPanel, BorderLayout.EAST);
+        JPanel detailsList = new JPanel();
+        detailsList.setLayout(new BoxLayout(detailsList, BoxLayout.Y_AXIS));
+        detailsList.setBackground(Color.WHITE);
+        detailsList.setBorder(new EmptyBorder(10, 25, 10, 25));
 
-        mainPanel.add(card);
-        add(mainPanel, BorderLayout.CENTER);
+        detailsList.add(createDetailRow("Item Name:", "Black Wallet", "👛"));
+        detailsList.add(createDetailRow("Category:", "Wallet / Personal Item", "📦"));
+        detailsList.add(createDetailRow(
+            "Description:",
+            "Black leather wallet, has 2 cards inside and some cash. Slight scratch on corner.",
+            "📝"
+        ));
+        detailsList.add(createDetailRow(
+            "Location Found:",
+            "College Canteen - Table near counter",
+            "📍"
+        ));
+        detailsList.add(createDetailRow(
+            "Date Found:",
+            "25/09/2026 at 2:30 PM",
+            "📅"
+        ));
+        detailsList.add(createDetailRow(
+            "Found By:",
+            "Reported by Student - ID: S-2041",
+            "👤"
+        ));
+        detailsList.add(createDetailRow(
+            "Status:",
+            "FOUND - Available for Claim",
+            "✅"
+        ));
 
-        // ================= FOOTER =================
+        // Divider
+        JSeparator sep = new JSeparator();
+        sep.setMaximumSize(new Dimension(1000, 1));
+        sep.setForeground(BORDER);
 
-        JPanel footer = new JPanel(new BorderLayout());
-        footer.setBackground(Color.WHITE);
-        footer.setBorder(new EmptyBorder(12, 30, 12, 30));
+        detailsList.add(Box.createVerticalStrut(15));
+        detailsList.add(sep);
+        detailsList.add(Box.createVerticalStrut(15));
 
-        JLabel footerLabel = new JLabel(
-                "College Lost and Found System"
+        // How to claim
+        JPanel howTo = new JPanel(new BorderLayout());
+        howTo.setBackground(new Color(239, 246, 255));
+        howTo.setBorder(BorderFactory.createCompoundBorder(
+            new LineBorder(new Color(191, 219, 254), 1, true),
+            new EmptyBorder(14, 14, 14, 14)
+        ));
+        howTo.setMaximumSize(new Dimension(1000, 90));
+
+        JLabel howToLabel = new JLabel(
+            "<html><b style='color:#1e40af'>How to claim?</b><br>" +
+            "<span style='color:#4b5563'>" +
+            "1. Click Claim Item  2. Provide proofs  " +
+            "3. Admin verifies and contact within 24hrs" +
+            "</span></html>"
         );
-        footerLabel.setFont(new Font("Arial", Font.PLAIN, 12));
-        footerLabel.setForeground(MUTED);
+        howToLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        howTo.add(howToLabel, BorderLayout.CENTER);
 
-        footer.add(footerLabel, BorderLayout.WEST);
-        add(footer, BorderLayout.SOUTH);
+        detailsList.add(howTo);
+
+        right.add(detailsList);
+
+        main.add(right, BorderLayout.CENTER);
+        wrapper.add(main);
+        add(wrapper, BorderLayout.CENTER);
     }
 
-    // ================= DETAIL ROW =================
-
-    private JPanel createDetailRow(String label, String value) {
-
-        JPanel row = new JPanel(new BorderLayout(10, 5));
-        row.setBackground(Color.WHITE);
-        row.setBorder(new EmptyBorder(8, 0, 8, 0));
-        row.setAlignmentX(Component.LEFT_ALIGNMENT);
-        row.setMaximumSize(new Dimension(450, 50));
-
-        JLabel labelText = new JLabel(label);
-        labelText.setFont(new Font("Arial", Font.BOLD, 11));
-        labelText.setForeground(MUTED);
-
-        JLabel valueText = new JLabel(value);
-        valueText.setFont(new Font("Arial", Font.PLAIN, 14));
-        valueText.setForeground(TEXT);
-
-        row.add(labelText, BorderLayout.WEST);
-        row.add(valueText, BorderLayout.CENTER);
-
-        return row;
-    }
-
-    // ================= BUTTON ACTIONS =================
-
+    // ===== NAVIGATION TO SEARCH =====
     private void goToSearch() {
         new SearchFrame().setVisible(true);
         dispose();
     }
 
-    private void openClaimFrame() {
+    private JPanel createDetailRow(String key, String value, String icon) {
+        JPanel row = new JPanel(new BorderLayout(12, 0));
+        row.setBackground(Color.WHITE);
+        row.setBorder(new EmptyBorder(12, 0, 12, 0));
+        row.setMaximumSize(new Dimension(1000, 80));
 
-        if (!safe(item.status).equalsIgnoreCase("Found")) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Only found items can be claimed.",
-                    "Cannot Submit Claim",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
-            return;
-        }
+        JLabel iconL = new JLabel(icon);
+        iconL.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        iconL.setPreferredSize(new Dimension(30, 30));
 
-        SearchFrame.selectedItem = item;
+        JPanel text = new JPanel();
+        text.setLayout(new BoxLayout(text, BoxLayout.Y_AXIS));
+        text.setBackground(Color.WHITE);
 
-        new ClaimFrame().setVisible(true);
-        dispose();
+        JLabel k = new JLabel(key);
+        k.setFont(new Font("Segoe UI", Font.BOLD, 11));
+        k.setForeground(TEXT_GRAY);
+
+        JLabel v = new JLabel(
+            "<html><div style='width:380px'>" + value + "</div></html>"
+        );
+        v.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        v.setForeground(new Color(17, 24, 39));
+        v.setBorder(new EmptyBorder(3, 0, 0, 0));
+
+        text.add(k);
+        text.add(v);
+
+        row.add(iconL, BorderLayout.WEST);
+        row.add(text, BorderLayout.CENTER);
+
+        return row;
     }
 
-    private String safe(String value) {
-        return value == null || value.trim().isEmpty()
-                ? "Not available"
-                : value;
-    }
-
-    // ================= TESTING =================
+    final Color TEXT_GRAY = new Color(107, 114, 128);
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new ItemDetailsFrame().setVisible(true);
-        });
+        SwingUtilities.invokeLater(
+            () -> new ItemDetailsFrame().setVisible(true)
+        );
     }
 }
