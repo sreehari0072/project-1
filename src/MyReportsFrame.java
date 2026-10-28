@@ -5,6 +5,8 @@ import java.awt.*;
 
 public class MyReportsFrame extends JFrame {
 
+    private JTable table;
+
     public MyReportsFrame() {
         setTitle("My Reports");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -36,6 +38,10 @@ public class MyReportsFrame extends JFrame {
         backTop.setBackground(new Color(29, 78, 216));
         backTop.setBorder(new EmptyBorder(8, 18, 8, 18));
         backTop.setFocusPainted(false);
+
+        // FUNCTION: Top Back button
+        backTop.addActionListener(e -> goHome());
+
         header.add(backTop, BorderLayout.EAST);
         add(header, BorderLayout.NORTH);
 
@@ -53,8 +59,8 @@ public class MyReportsFrame extends JFrame {
         JPanel cardHeader = new JPanel(new BorderLayout());
         cardHeader.setBackground(Color.WHITE);
         cardHeader.setBorder(BorderFactory.createCompoundBorder(
-            new MatteBorder(0,0,1,0, BORDER),
-            new EmptyBorder(20, 25, 20, 25)
+                new MatteBorder(0, 0, 1, 0, BORDER),
+                new EmptyBorder(20, 25, 20, 25)
         ));
 
         JPanel titlePanel = new JPanel();
@@ -68,24 +74,42 @@ public class MyReportsFrame extends JFrame {
         JLabel subtitle = new JLabel("3 reports submitted by you");
         subtitle.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         subtitle.setForeground(TEXT_GRAY);
-        subtitle.setBorder(new EmptyBorder(4,0,0,0));
+        subtitle.setBorder(new EmptyBorder(4, 0, 0, 0));
 
         titlePanel.add(title);
         titlePanel.add(subtitle);
 
-        // small stats on right
+        // Small stats on right
         JPanel stats = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         stats.setBackground(Color.WHITE);
-        stats.add(createMiniStat("Lost", "2", new Color(254,226,226), new Color(153,27,27)));
-        stats.add(createMiniStat("Found", "1", new Color(219,234,254), new Color(30,64,175)));
-        stats.add(createMiniStat("Returned", "1", new Color(220,252,231), new Color(22,101,52)));
+
+        stats.add(createMiniStat(
+                "Lost", "2",
+                new Color(254, 226, 226),
+                new Color(153, 27, 27)
+        ));
+
+        stats.add(createMiniStat(
+                "Found", "1",
+                new Color(219, 234, 254),
+                new Color(30, 64, 175)
+        ));
+
+        stats.add(createMiniStat(
+                "Returned", "1",
+                new Color(220, 252, 231),
+                new Color(22, 101, 52)
+        ));
 
         cardHeader.add(titlePanel, BorderLayout.WEST);
         cardHeader.add(stats, BorderLayout.EAST);
         card.add(cardHeader, BorderLayout.NORTH);
 
         // ===== TABLE =====
-        String[] columns = {"Item", "Type", "Date", "Status", "Location"};
+        String[] columns = {
+                "Item", "Type", "Date", "Status", "Location"
+        };
+
         Object[][] data = {
                 {"Wallet - Black Leather", "Lost", "25/09/2026", "Lost", "Library Block"},
                 {"ID Card - CS Dept", "Lost", "20/09/2026", "Returned", "Canteen"},
@@ -93,54 +117,68 @@ public class MyReportsFrame extends JFrame {
         };
 
         DefaultTableModel model = new DefaultTableModel(data, columns) {
-            public boolean isCellEditable(int row, int column) { return false; }
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
         };
 
-        JTable table = new JTable(model);
+        table = new JTable(model);
         table.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         table.setRowHeight(52);
         table.setShowGrid(false);
-        table.setIntercellSpacing(new Dimension(0,0));
-        table.setSelectionBackground(new Color(239,246,255));
+        table.setIntercellSpacing(new Dimension(0, 0));
+        table.setSelectionBackground(new Color(239, 246, 255));
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         JTableHeader th = table.getTableHeader();
         th.setFont(new Font("Segoe UI", Font.BOLD, 12));
         th.setForeground(TEXT_GRAY);
         th.setBackground(new Color(249, 250, 251));
-        th.setBorder(new MatteBorder(0,0,1,0, BORDER));
+        th.setBorder(new MatteBorder(0, 0, 1, 0, BORDER));
         th.setPreferredSize(new Dimension(0, 42));
 
         for (int i = 0; i < table.getColumnCount(); i++) {
-            table.getColumnModel().getColumn(i).setCellRenderer(new StatusRenderer());
+            table.getColumnModel()
+                    .getColumn(i)
+                    .setCellRenderer(new StatusRenderer());
         }
 
         JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setBorder(new EmptyBorder(0,0,0,0));
+        scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
         scrollPane.getViewport().setBackground(Color.WHITE);
+
         card.add(scrollPane, BorderLayout.CENTER);
 
         // ===== BOTTOM =====
         JPanel bottomPanel = new JPanel(new BorderLayout());
-        bottomPanel.setBackground(new Color(249,250,251));
+        bottomPanel.setBackground(new Color(249, 250, 251));
         bottomPanel.setBorder(BorderFactory.createCompoundBorder(
-            new MatteBorder(1,0,0,0, BORDER),
-            new EmptyBorder(15, 25, 15, 25)
+                new MatteBorder(1, 0, 0, 0, BORDER),
+                new EmptyBorder(15, 25, 15, 25)
         ));
 
         JLabel hint = new JLabel("Select a report to view full details");
         hint.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         hint.setForeground(TEXT_GRAY);
 
-        JPanel actions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
-        actions.setBackground(new Color(249,250,251));
+        JPanel actions = new JPanel(
+                new FlowLayout(FlowLayout.RIGHT, 10, 0)
+        );
+        actions.setBackground(new Color(249, 250, 251));
 
         JButton backButton = new JButton("BACK");
         backButton.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         backButton.setBackground(Color.WHITE);
         backButton.setBorder(BorderFactory.createCompoundBorder(
-            new LineBorder(BORDER,1,true), new EmptyBorder(9,18,9,18)
+                new LineBorder(BORDER, 1, true),
+                new EmptyBorder(9, 18, 9, 18)
         ));
         backButton.setFocusPainted(false);
+
+        // FUNCTION: Bottom Back button
+        backButton.addActionListener(e -> goHome());
 
         JButton viewButton = new JButton("VIEW DETAILS");
         viewButton.setFont(new Font("Segoe UI", Font.BOLD, 13));
@@ -150,68 +188,169 @@ public class MyReportsFrame extends JFrame {
         viewButton.setFocusPainted(false);
         viewButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
+        // FUNCTION: View selected report details
+        viewButton.addActionListener(e -> viewSelectedReport());
+
         actions.add(backButton);
         actions.add(viewButton);
 
         bottomPanel.add(hint, BorderLayout.WEST);
         bottomPanel.add(actions, BorderLayout.EAST);
+
         card.add(bottomPanel, BorderLayout.SOUTH);
 
         wrapper.add(card);
         add(wrapper, BorderLayout.CENTER);
     }
 
-    private JPanel createMiniStat(String label, String count, Color bg, Color fg) {
-        JPanel p = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 4));
+    // Return to HomeFrame
+    private void goHome() {
+        new HomeFrame().setVisible(true);
+        dispose();
+    }
+
+    // Show details for the selected sample report.
+    // This only displays information; it does not save or retrieve database data.
+    private void viewSelectedReport() {
+
+        int selectedRow = table.getSelectedRow();
+
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Please select a report from the table first.",
+                    "No Report Selected",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+            return;
+        }
+
+        int row = table.convertRowIndexToModel(selectedRow);
+        TableModel model = table.getModel();
+
+        String item = model.getValueAt(row, 0).toString();
+        String type = model.getValueAt(row, 1).toString();
+        String date = model.getValueAt(row, 2).toString();
+        String status = model.getValueAt(row, 3).toString();
+        String location = model.getValueAt(row, 4).toString();
+
+        String details =
+                "ITEM DETAILS\n\n"
+                + "Item: " + item + "\n"
+                + "Type: " + type + "\n"
+                + "Date: " + date + "\n"
+                + "Status: " + status + "\n"
+                + "Location: " + location
+                + "\n\nNote: This is sample report data.";
+
+        JOptionPane.showMessageDialog(
+                this,
+                details,
+                "Report Details",
+                JOptionPane.INFORMATION_MESSAGE
+        );
+    }
+
+    private JPanel createMiniStat(
+            String label,
+            String count,
+            Color bg,
+            Color fg
+    ) {
+        JPanel p = new JPanel(
+                new FlowLayout(FlowLayout.CENTER, 8, 4)
+        );
+
         p.setBackground(bg);
-        p.setBorder(new EmptyBorder(4,10,4,10));
+        p.setBorder(new EmptyBorder(4, 10, 4, 10));
+
         JLabel c = new JLabel(count);
         c.setFont(new Font("Segoe UI", Font.BOLD, 13));
         c.setForeground(fg);
+
         JLabel l = new JLabel(label);
         l.setFont(new Font("Segoe UI", Font.PLAIN, 11));
         l.setForeground(fg);
-        p.add(c); p.add(l);
+
+        p.add(c);
+        p.add(l);
+
         return p;
     }
 
     class StatusRenderer extends DefaultTableCellRenderer {
+
         @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        public Component getTableCellRendererComponent(
+                JTable table,
+                Object value,
+                boolean isSelected,
+                boolean hasFocus,
+                int row,
+                int column
+        ) {
             JLabel base = new JLabel(value.toString());
+
             base.setFont(new Font("Segoe UI", Font.PLAIN, 13));
             base.setOpaque(true);
-            base.setBorder(new EmptyBorder(0,15,0,0));
-            base.setBackground(isSelected ? new Color(239,246,255) : (row%2==0 ? Color.WHITE : new Color(249,250,251)));
+            base.setBorder(new EmptyBorder(0, 15, 0, 0));
 
-            if (column == 3) { // Status badge
+            base.setBackground(
+                    isSelected
+                            ? new Color(239, 246, 255)
+                            : (row % 2 == 0
+                                    ? Color.WHITE
+                                    : new Color(249, 250, 251))
+            );
+
+            if (column == 3) {
+
+                // Status badge
                 JLabel badge = new JLabel(value.toString().toUpperCase());
+
                 badge.setFont(new Font("Segoe UI", Font.BOLD, 11));
                 badge.setOpaque(true);
-                badge.setBorder(new EmptyBorder(5,12,5,12));
+                badge.setBorder(new EmptyBorder(5, 12, 5, 12));
                 badge.setHorizontalAlignment(SwingConstants.CENTER);
+
                 String s = value.toString().toLowerCase();
+
                 if (s.contains("lost")) {
-                    badge.setBackground(new Color(254,226,226)); badge.setForeground(new Color(153,27,27));
+                    badge.setBackground(new Color(254, 226, 226));
+                    badge.setForeground(new Color(153, 27, 27));
+
                 } else if (s.contains("found")) {
-                    badge.setBackground(new Color(219,234,254)); badge.setForeground(new Color(30,64,175));
+                    badge.setBackground(new Color(219, 234, 254));
+                    badge.setForeground(new Color(30, 64, 175));
+
                 } else {
-                    badge.setBackground(new Color(220,252,231)); badge.setForeground(new Color(22,101,52));
+                    badge.setBackground(new Color(220, 252, 231));
+                    badge.setForeground(new Color(22, 101, 52));
                 }
-                JPanel wrap = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 10));
+
+                JPanel wrap = new JPanel(
+                        new FlowLayout(FlowLayout.LEFT, 15, 10)
+                );
+
                 wrap.setBackground(base.getBackground());
                 wrap.add(badge);
+
                 return wrap;
             }
-            if (column == 1) { // Type
-                base.setForeground(new Color(107,114,128));
+
+            if (column == 1) {
+                // Type
+                base.setForeground(new Color(107, 114, 128));
                 base.setFont(new Font("Segoe UI", Font.BOLD, 12));
             }
+
             return base;
         }
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new MyReportsFrame().setVisible(true));
+        SwingUtilities.invokeLater(
+                () -> new MyReportsFrame().setVisible(true)
+        );
     }
 }
