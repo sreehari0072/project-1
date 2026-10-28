@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
+import java.awt.event.*;
 
 public class HomeFrame extends JFrame {
 
@@ -29,7 +30,9 @@ public class HomeFrame extends JFrame {
         headerTitle.setForeground(Color.WHITE);
         header.add(headerTitle, BorderLayout.WEST);
 
-        JPanel rightHeader = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 0));
+        JPanel rightHeader = new JPanel(
+                new FlowLayout(FlowLayout.RIGHT, 15, 0)
+        );
         rightHeader.setOpaque(false);
 
         JLabel userLabel = new JLabel("👤 Welcome, User!");
@@ -43,9 +46,13 @@ public class HomeFrame extends JFrame {
         logoutTop.setBorder(new EmptyBorder(7, 16, 7, 16));
         logoutTop.setFocusPainted(false);
 
+        // FUNCTION: Top Logout button
+        logoutTop.addActionListener(e -> logout());
+
         rightHeader.add(userLabel);
         rightHeader.add(logoutTop);
         header.add(rightHeader, BorderLayout.EAST);
+
         add(header, BorderLayout.NORTH);
 
         // ===== CENTER =====
@@ -63,18 +70,20 @@ public class HomeFrame extends JFrame {
         JPanel banner = new JPanel(new BorderLayout());
         banner.setBackground(Color.WHITE);
         banner.setBorder(BorderFactory.createCompoundBorder(
-            new MatteBorder(0,0,1,0, BORDER),
-            new EmptyBorder(30, 35, 25, 35)
+                new MatteBorder(0, 0, 1, 0, BORDER),
+                new EmptyBorder(30, 35, 25, 35)
         ));
 
         JLabel title = new JLabel("LOST & FOUND");
         title.setFont(new Font("Segoe UI", Font.BOLD, 26));
         title.setForeground(TEXT_DARK);
 
-        JLabel welcome = new JLabel("Find what you lost, return what you found - campus community portal");
+        JLabel welcome = new JLabel(
+                "Find what you lost, return what you found - campus community portal"
+        );
         welcome.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         welcome.setForeground(TEXT_GRAY);
-        welcome.setBorder(new EmptyBorder(6,0,0,0));
+        welcome.setBorder(new EmptyBorder(6, 0, 0, 0));
 
         JPanel titlePanel = new JPanel();
         titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.Y_AXIS));
@@ -90,25 +99,91 @@ public class HomeFrame extends JFrame {
         grid.setBackground(Color.WHITE);
         grid.setBorder(new EmptyBorder(30, 30, 30, 30));
 
-        grid.add(createActionCard("REPORT LOST ITEM", "Lost something?", "📦", new Color(239,68,68), new Color(254,226,226)));
-        grid.add(createActionCard("REPORT FOUND ITEM", "Found something?", "🔍", new Color(16,185,129), new Color(220,252,231)));
-        grid.add(createActionCard("SEARCH ITEMS", "Browse all items", "🔎", new Color(37,99,235), new Color(219,234,254)));
-        grid.add(createActionCard("MY REPORTS", "Your submissions", "📋", new Color(245,158,11), new Color(254,243,199)));
-        grid.add(createActionCard("MY CLAIMS", "Track your claims", "📄", new Color(139,92,246), new Color(237,233,254)));
-        grid.add(createActionCard("LOGOUT", "Exit portal", "🚪", new Color(107,114,128), new Color(243,244,246)));
+        JPanel reportLostCard = createActionCard(
+                "REPORT LOST ITEM",
+                "Lost something?",
+                "📦",
+                new Color(239, 68, 68),
+                new Color(254, 226, 226)
+        );
+
+        JPanel reportFoundCard = createActionCard(
+                "REPORT FOUND ITEM",
+                "Found something?",
+                "🔍",
+                new Color(16, 185, 129),
+                new Color(220, 252, 231)
+        );
+
+        JPanel searchCard = createActionCard(
+                "SEARCH ITEMS",
+                "Browse all items",
+                "🔎",
+                new Color(37, 99, 235),
+                new Color(219, 234, 254)
+        );
+
+        JPanel myReportsCard = createActionCard(
+                "MY REPORTS",
+                "Your submissions",
+                "📋",
+                new Color(245, 158, 11),
+                new Color(254, 243, 199)
+        );
+
+        JPanel myClaimsCard = createActionCard(
+                "MY CLAIMS",
+                "Track your claims",
+                "📄",
+                new Color(139, 92, 246),
+                new Color(237, 233, 254)
+        );
+
+        JPanel logoutCard = createActionCard(
+                "LOGOUT",
+                "Exit portal",
+                "🚪",
+                new Color(107, 114, 128),
+                new Color(243, 244, 246)
+        );
+
+        // FUNCTION: Make the action cards clickable.
+        // Clicks on their labels and icons will work too.
+        addCardAction(reportLostCard, () -> openFrame(new ReportLostFrame()));
+
+        addCardAction(reportFoundCard, () -> openFrame(new ReportFoundFrame()));
+
+        addCardAction(searchCard, () -> openFrame(new SearchFrame()));
+
+        addCardAction(myReportsCard, () -> openFrame(new MyReportsFrame()));
+
+        addCardAction(myClaimsCard, () -> openFrame(new ClaimFrame()));
+
+        addCardAction(logoutCard, () -> logout());
+
+        grid.add(reportLostCard);
+        grid.add(reportFoundCard);
+        grid.add(searchCard);
+        grid.add(myReportsCard);
+        grid.add(myClaimsCard);
+        grid.add(logoutCard);
 
         mainCard.add(grid);
 
         // Bottom hint
         JPanel bottom = new JPanel(new BorderLayout());
-        bottom.setBackground(new Color(249,250,251));
+        bottom.setBackground(new Color(249, 250, 251));
         bottom.setBorder(BorderFactory.createCompoundBorder(
-            new MatteBorder(1,0,0,0, BORDER),
-            new EmptyBorder(12, 30, 12, 30)
+                new MatteBorder(1, 0, 0, 0, BORDER),
+                new EmptyBorder(12, 30, 12, 30)
         ));
-        JLabel hint = new JLabel("Tip: Report items with clear photos and location for faster recovery • 42 items returned this month");
+
+        JLabel hint = new JLabel(
+                "Tip: Report items with clear photos and location for faster recovery • 42 items returned this month"
+        );
         hint.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         hint.setForeground(TEXT_GRAY);
+
         bottom.add(hint, BorderLayout.WEST);
         mainCard.add(bottom);
 
@@ -116,30 +191,42 @@ public class HomeFrame extends JFrame {
         add(wrapper, BorderLayout.CENTER);
     }
 
-    private JPanel createActionCard(String title, String subtitle, String icon, Color accent, Color lightBg) {
+    private JPanel createActionCard(
+            String title,
+            String subtitle,
+            String icon,
+            Color accent,
+            Color lightBg
+    ) {
         JPanel card = new JPanel();
         card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
         card.setBackground(Color.WHITE);
+
         card.setBorder(BorderFactory.createCompoundBorder(
-            new LineBorder(new Color(229,231,235), 1, true),
-            new EmptyBorder(20, 20, 20, 20)
+                new LineBorder(new Color(229, 231, 235), 1, true),
+                new EmptyBorder(20, 20, 20, 20)
         ));
+
         card.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         // Hover effect like website
         card.addMouseListener(new java.awt.event.MouseAdapter() {
+
             public void mouseEntered(java.awt.event.MouseEvent e) {
                 card.setBorder(BorderFactory.createCompoundBorder(
-                    new LineBorder(accent, 2, true),
-                    new EmptyBorder(19, 19, 19, 19)
+                        new LineBorder(accent, 2, true),
+                        new EmptyBorder(19, 19, 19, 19)
                 ));
-                card.setBackground(new Color(249,250,251));
+
+                card.setBackground(new Color(249, 250, 251));
             }
+
             public void mouseExited(java.awt.event.MouseEvent e) {
                 card.setBorder(BorderFactory.createCompoundBorder(
-                    new LineBorder(new Color(229,231,235), 1, true),
-                    new EmptyBorder(20, 20, 20, 20)
+                        new LineBorder(new Color(229, 231, 235), 1, true),
+                        new EmptyBorder(20, 20, 20, 20)
                 ));
+
                 card.setBackground(Color.WHITE);
             }
         });
@@ -150,9 +237,11 @@ public class HomeFrame extends JFrame {
 
         JPanel iconBox = new JPanel(new GridBagLayout());
         iconBox.setBackground(lightBg);
-        iconBox.setPreferredSize(new Dimension(48,48));
+        iconBox.setPreferredSize(new Dimension(48, 48));
+
         JLabel iconLabel = new JLabel(icon);
         iconLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+
         iconBox.add(iconLabel);
 
         JLabel arrow = new JLabel("→");
@@ -164,14 +253,14 @@ public class HomeFrame extends JFrame {
 
         JLabel titleLabel = new JLabel(title);
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        titleLabel.setForeground(new Color(17,24,39));
-        titleLabel.setBorder(new EmptyBorder(16,0,0,0));
+        titleLabel.setForeground(new Color(17, 24, 39));
+        titleLabel.setBorder(new EmptyBorder(16, 0, 0, 0));
         titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JLabel subLabel = new JLabel(subtitle);
         subLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        subLabel.setForeground(new Color(107,114,128));
-        subLabel.setBorder(new EmptyBorder(4,0,0,0));
+        subLabel.setForeground(new Color(107, 114, 128));
+        subLabel.setBorder(new EmptyBorder(4, 0, 0, 0));
         subLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JPanel line = new JPanel();
@@ -186,6 +275,48 @@ public class HomeFrame extends JFrame {
         card.add(line);
 
         return card;
+    }
+
+    // Attach the action to the card and all its child components.
+    private void addCardAction(Component component, Runnable action) {
+
+        component.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    action.run();
+                }
+            }
+        });
+
+        if (component instanceof Container) {
+            for (Component child : ((Container) component).getComponents()) {
+                addCardAction(child, action);
+            }
+        }
+    }
+
+    // Open another frame and close the current one.
+    private void openFrame(JFrame frame) {
+        frame.setVisible(true);
+        dispose();
+    }
+
+    // FUNCTION: Logout
+    private void logout() {
+
+        int choice = JOptionPane.showConfirmDialog(
+                this,
+                "Are you sure you want to logout?",
+                "Confirm Logout",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (choice == JOptionPane.YES_OPTION) {
+            openFrame(new WelcomeFrame());
+        }
     }
 
     public static void main(String[] args) {
