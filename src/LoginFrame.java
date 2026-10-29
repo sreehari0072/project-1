@@ -254,6 +254,10 @@ public class LoginFrame extends JFrame {
                     "Fields entered successfully.\n" +
                     "Actual login requires account verification."
                 );
+              new HomeFrame.java();
+              setVisible(true);
+              dispose();
+                 
             }
         });
 
